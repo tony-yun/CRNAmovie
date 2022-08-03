@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
@@ -41,7 +41,11 @@ export default function App() {
   }, [appIsReady]);
 
   if (!appIsReady) {
-    return null;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Image source={require("./src/apple.jpeg")} />
+      </View>
+    );
   }
 
   return (

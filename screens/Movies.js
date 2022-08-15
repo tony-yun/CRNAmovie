@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import Swiper from "react-native-swiper";
 import { ActivityIndicator, Dimensions } from "react-native";
 import Slide from "../components/Slide";
+import { API_KEY } from "@env";
 
 const Movies = () => {
   const [loading, setLoading] = useState(true);
@@ -76,8 +77,6 @@ const Movies = () => {
 };
 
 export default Movies;
-
-const API_KEY = "a3335955f6b64a441443225e3776ef80";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 

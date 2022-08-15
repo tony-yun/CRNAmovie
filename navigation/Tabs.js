@@ -13,6 +13,9 @@ const Tabs = () => {
   const isDark = useColorScheme() === "dark";
   return (
     <Tab.Navigator
+      // 화면 하나하나에서 다 backgroundColor를 적용시키고 싶지 않으면
+      // 여기서 sceneContainerStyle을 해서 전부 적용.
+      sceneContainerStyle={{ backgroundColor: isDark ? BLACK_COLOR : "white" }}
       screenOptions={{
         tabBarStyle: {
           backgroundColor: isDark ? BLACK_COLOR : "white",

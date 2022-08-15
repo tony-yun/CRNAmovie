@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
-import Swiper from "react-native-web-swiper";
-import { ActivityIndicator, Dimensions, StyleSheet } from "react-native";
+import Swiper from "react-native-swiper";
+import { ActivityIndicator, Dimensions, Image, StyleSheet } from "react-native";
 import { makeImgPath } from "../utils";
 
 const Movies = () => {
@@ -26,17 +26,32 @@ const Movies = () => {
   ) : (
     <Container>
       <Swiper
+        horizontal
         loop
-        timeout={30}
-        controlsEnabled={false}
+        showsButtons={false}
+        autoplay
+        autoplayTimeout={10}
+        showsPagination={false}
         containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
       >
         {nowPlaying.map((movie) => (
           <View key={movie.id}>
-            <BgImg
+            <Image
               style={StyleSheet.absoluteFill}
+              // StyleSheet.absoluteFill로 width:100%,height:100%,position:absolute한번에 대체
               source={{ uri: makeImgPath(movie.backdrop_path) }}
+              blurRadius={6}
             />
+            <Wrapper>
+              <Poster source={{ uri: makeImgPath(movie.poster_path) }} />
+              <Column>
+                <Title>{movie.original_title}</Title>
+                {movie.vote_average > 0 ? (
+                  <Votes>⭐️{movie.vote_average}/10</Votes>
+                ) : null}
+                <Overview>{movie.overview.slice(0, 90)}...</Overview>
+              </Column>
+            </Wrapper>
           </View>
         ))}
       </Swiper>
@@ -59,4 +74,31 @@ const Loader = styled.View`
   justify-content: center;
   align-items: center;
 `;
-const BgImg = styled.Image``;
+const Title = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  color: ${(props) => props.theme.textColor};
+`;
+const Wrapper = styled.View`
+  flex-direction: row;
+  height: 100%;
+  width: 90%;
+  margin: 0 auto;
+  justify-content: space-around;
+  align-items: center;
+`;
+const Column = styled.View`
+  width: 60%;
+`;
+const Overview = styled.Text`
+  margin-top: 10px;
+  color: ${(props) => props.theme.textColor};
+`;
+const Votes = styled(Overview)`
+  font-size: 12px;
+`;
+const Poster = styled.Image`
+  width: 100px;
+  height: 160px;
+  border-radius: 5px;
+`;

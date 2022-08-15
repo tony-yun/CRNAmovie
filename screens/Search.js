@@ -1,9 +1,20 @@
 import React from "react";
-import { View, Text } from "react-native";
+import styled from "styled-components/native";
 
 const Search = () => (
-  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text>Search</Text>
-  </View>
+  <Btn>
+    <Title>Search</Title>
+  </Btn>
 );
 export default Search;
+
+const Btn = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.mainBgColor};
+`;
+
+const Title = styled.Text`
+  color: ${(props) => props.theme.textColor};
+`;

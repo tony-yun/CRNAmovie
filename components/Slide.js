@@ -23,7 +23,7 @@ const Slide = ({
         <Poster path={posterPath} />
         <Column>
           <Title>{originalTitle}</Title>
-          {voteAverage > 0 ? <Votes>⭐️{voteAverage}/10</Votes> : null}
+          {voteAverage > 0 ? <Votes>⭐️{voteAverage} / 10</Votes> : null}
           <Overview>{overview.slice(0, 100)}...</Overview>
         </Column>
       </Wrapper>

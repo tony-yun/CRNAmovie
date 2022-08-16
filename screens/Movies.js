@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import Swiper from "react-native-swiper";
-import { ActivityIndicator, Dimensions } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import Slide from "../components/Slide";
 import { API_KEY } from "@env";
+import Poster from "../components/Poster";
 
 const Movies = () => {
   const [loading, setLoading] = useState(true);
@@ -59,7 +66,11 @@ const Movies = () => {
         autoplay
         autoplayTimeout={10}
         showsPagination={false}
-        containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
+        containerStyle={{
+          width: "100%",
+          height: SCREEN_HEIGHT / 4,
+          marginBottom: 20,
+        }}
       >
         {nowPlaying.map((movie) => (
           <Slide
@@ -72,6 +83,59 @@ const Movies = () => {
           />
         ))}
       </Swiper>
+
+      <View style={{ marginBottom: 20 }}>
+        <ListTitle>Trending Movies</ListTitle>
+        <ScrollView
+          contentContainerStyle={{ paddingLeft: 20, marginTop: 20 }}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          {trending.map((movie) => (
+            //{trending.reverse().map((movie) =>( //reverse들어가면 정렬순서 반대로
+            <View
+              key={movie.id}
+              style={{ marginRight: 20, alignItems: "center" }}
+            >
+              <Poster path={movie.poster_path} />
+              <Title>
+                {movie.original_title.slice(0, 13)}
+                {movie.original_title.length > 13 ? "..." : null}
+              </Title>
+              <Votes>
+                {movie.vote_average > 0
+                  ? `⭐️${movie.vote_average.toFixed(1)} / 10`
+                  : `Coming soon`}
+              </Votes>
+              {/* 다른 표시 방법 */}
+              {/* {movie.vote_average > 0 ? (
+                <Votes>⭐️{movie.vote_average.toFixed(1)} / 10</Votes>
+              ) : null} */}
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+
+      <ComingSoonTitle>Coming Soon</ComingSoonTitle>
+      {/* upcoming.map((movie) => {} <- 여기 대괄호로 하면 데이터가 안불러와짐. */}
+      {upcoming.map((movie) => (
+        <HMovie key={movie.id}>
+          <Poster path={movie.poster_path} />
+          <HColumn>
+            <Title>{movie.original_title}</Title>
+            <Release>
+              {new Date(movie.release_date).toLocaleDateString("ko")}
+              {/* .toLocaleDateString("ko")한국식으로 날짜 변환 */}
+            </Release>
+            <Overview>
+              {movie.overview !== "" && movie.overview.length > 140
+                ? `${movie.overview.slice(0, 140)}...`
+                : movie.overview}
+              {movie.overview === "" ? "Coming soon" : null}
+            </Overview>
+          </HColumn>
+        </HMovie>
+      ))}
     </Container>
   );
 };
@@ -86,4 +150,42 @@ const Loader = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+`;
+const ListTitle = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 20px;
+`;
+const Title = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-size: 16px;
+  font-weight: 600;
+  margin: 5px 0 5px 0;
+`;
+const Votes = styled.Text`
+  color: ${(props) => props.theme.textColor};
+`;
+const HMovie = styled.View`
+  padding: 0 30px;
+  flex-direction: row;
+  margin-bottom: 30px;
+`;
+const HColumn = styled.View`
+  margin-left: 15px;
+  width: 80%;
+`;
+const Overview = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  width: 80%;
+`;
+//흰색을 맞추는 방법은 두가지.
+//1. rgba(255,255,255,0.8) 식으로 rgba작성.
+//2. color:white 하고 opacity:0.8을 준다.
+const Release = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  margin: 10px 0;
+`;
+const ComingSoonTitle = styled(ListTitle)`
+  margin-bottom: 20px;
 `;

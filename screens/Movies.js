@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import Swiper from "react-native-swiper";
-import {
-  ActivityIndicator,
-  Dimensions,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Dimensions, ScrollView, View } from "react-native";
 import Slide from "../components/Slide";
 import { API_KEY } from "@env";
 import Poster from "../components/Poster";
@@ -58,7 +52,7 @@ const Movies = () => {
       <ActivityIndicator />
     </Loader>
   ) : (
-    <Container>
+    <ScrollView>
       <Swiper
         horizontal
         loop
@@ -124,8 +118,14 @@ const Movies = () => {
           <HColumn>
             <Title>{movie.original_title}</Title>
             <Release>
-              {new Date(movie.release_date).toLocaleDateString("ko")}
-              {/* .toLocaleDateString("ko")한국식으로 날짜 변환 */}
+              {new Date(movie.release_date).toLocaleDateString("ko", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+              {/* .toLocaleDateString("ko")은 "ko"로 한국식 날짜 변환,"en"등 가능 */}
+              {/* (기본 API)"2022-08-05" -> (.toLacaleDateString("ko") "2022.08.05.")  */}
+              {/* "ko"뒤에 {}위처럼 옵션추가 -> "2022년 8월 5일" */}
             </Release>
             <Overview>
               {movie.overview !== "" && movie.overview.length > 140
@@ -136,15 +136,13 @@ const Movies = () => {
           </HColumn>
         </HMovie>
       ))}
-    </Container>
+    </ScrollView>
   );
 };
 
 export default Movies;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
-
-const Container = styled.ScrollView``;
 
 const Loader = styled.View`
   flex: 1;

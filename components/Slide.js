@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
 import styled from "styled-components/native";
-import { makeImgPath } from "../utils";
+import { makeImgPath } from "../utils/utils";
 import Poster from "./Poster";
 
 const Slide = ({

@@ -4,7 +4,12 @@ import Movies from "../screens/Movies";
 import Tv from "../screens/Tv";
 import Search from "../screens/Search";
 import { useColorScheme } from "react-native";
-import { BLACK_COLOR, DARK_GREY, LIGHT_GREY, YELLOW_COLOR } from "../colors";
+import {
+  BLACK_COLOR,
+  DARK_GREY,
+  LIGHT_GREY,
+  YELLOW_COLOR,
+} from "../utils/colors";
 import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();

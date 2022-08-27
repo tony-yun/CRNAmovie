@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import Swiper from "react-native-swiper";
-import { ActivityIndicator, Dimensions, ScrollView, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  RefreshControl,
+  ScrollView,
+  View,
+} from "react-native";
 import Slide from "../components/Slide";
 import { API_KEY } from "@env";
 import Poster from "../components/Poster";
 
 const Movies = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
@@ -47,12 +54,26 @@ const Movies = () => {
     getData();
   }, []);
 
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await getData();
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+
   return loading ? (
     <Loader>
       <ActivityIndicator />
     </Loader>
   ) : (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <Swiper
         horizontal
         loop
